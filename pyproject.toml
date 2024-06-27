@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "anomalydetector"
+name = "anomalywatchdog"
 version = "0.0.1"
 description = ""
 authors = ["alexis-vazquez <alexis.vazquez@adevinta.com>", "enric-pampols <enric.pampols@adevinta.com>"]
