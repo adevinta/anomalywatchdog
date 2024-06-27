@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "anomalywatchdog"
-version = "0.0.1"
+version = "0.0.0"
 description = ""
 authors = ["alexis-vazquez <alexis.vazquez@adevinta.com>", "enric-pampols <enric.pampols@adevinta.com>"]
 license = "MIT"
