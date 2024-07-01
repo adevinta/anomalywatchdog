@@ -1,5 +1,5 @@
 import pandas as pd
-from loaders.package.a_data_treatment.data_handler \
+from anomalywatchdog.data_treatment.data_handler \
     import DataADHandler
 
 

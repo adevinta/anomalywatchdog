@@ -1,5 +1,5 @@
 import pandas as pd
-from loaders.package.a_data_treatment.input_checker \
+from anomalywatchdog.data_treatment.input_checker \
     import InputChecker
 
 

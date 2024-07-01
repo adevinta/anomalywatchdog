@@ -1,4 +1,4 @@
-from loaders.package.b_modelling.prophet_model \
+from anomalywatchdog.modelling.prophet_model \
     import ProphetModel
 import pandas as pd
 

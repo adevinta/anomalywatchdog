@@ -1,10 +1,10 @@
-from loaders.package.b_modelling.autoencoder_lstm_model\
+from anomalywatchdog.modelling.autoencoder_lstm_model\
     import AutoEncoderLSTMModel
-from loaders.package.b_modelling.autoencoder_conv_model\
+from anomalywatchdog.modelling.autoencoder_conv_model\
     import AutoEncoderConvModel
-from loaders.package.b_modelling.prophet_model\
+from anomalywatchdog.modelling.prophet_model\
     import ProphetModel
-from loaders.package.b_modelling.auto_arima_model\
+from anomalywatchdog.modelling.auto_arima_model\
     import AutoArimaModel
 
 

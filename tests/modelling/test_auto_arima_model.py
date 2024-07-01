@@ -1,4 +1,4 @@
-from loaders.package.b_modelling.auto_arima_model \
+from anomalywatchdog.modelling.auto_arima_model \
     import AutoArimaModel
 import pandas as pd
 

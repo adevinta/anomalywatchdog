@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from loaders.package.z_utils.create_sequences \
+from anomalywatchdog.utils.create_sequences \
     import create_sequences
 
 

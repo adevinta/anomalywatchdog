@@ -1,4 +1,4 @@
-from loaders.package.a_data_treatment.model_updater\
+from anomalywatchdog.data_treatment.model_updater\
     import ModelUpdater
 import pandas as pd
 

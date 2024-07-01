@@ -1,4 +1,4 @@
-from loaders.package.b_modelling.autoencoder_conv_model \
+from anomalywatchdog.modelling.autoencoder_conv_model \
     import AutoEncoderConvModel
 import pandas as pd
 

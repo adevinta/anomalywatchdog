@@ -1,5 +1,5 @@
 import pandas as pd
-from loaders.package.d_anomaly_features\
+from anomalywatchdog.anomaly_features\
     .CalendarFeatureCreator import CalendarFeatureCreator
 
 

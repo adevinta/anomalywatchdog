@@ -1,5 +1,5 @@
 import pandas as pd
-from loaders.package.z_utils.create_fourier_terms \
+from anomalywatchdog.utils.create_fourier_terms \
     import create_fourier_terms
 
 

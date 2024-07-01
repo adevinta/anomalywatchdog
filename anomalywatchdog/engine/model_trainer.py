@@ -1,5 +1,5 @@
 import pandas as pd
-from loaders.package.c_engine.model_factory \
+from anomalywatchdog.engine.model_factory \
     import ModelFactory
 
 

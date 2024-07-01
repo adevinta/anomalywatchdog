@@ -1,14 +1,14 @@
-from loaders.package.a_data_treatment.data_handler\
+from anomalywatchdog.data_treatment.data_handler\
     import DataADHandler
-from loaders.package.a_data_treatment.input_checker\
+from anomalywatchdog.data_treatment.input_checker\
     import InputChecker
-from loaders.package.a_data_treatment.model_updater\
+from anomalywatchdog.data_treatment.model_updater\
     import ModelUpdater
-from loaders.package.c_engine.model_trainer\
+from anomalywatchdog.engine.model_trainer\
     import ModelTrainer
-from loaders.package.c_engine.model_predictor\
+from anomalywatchdog.engine.model_predictor\
     import ModelPredictor
-from loaders.package.d_anomaly_features.create_features\
+from anomalywatchdog.anomaly_features.create_features\
     import create_features
 import os.path as op
 import yaml

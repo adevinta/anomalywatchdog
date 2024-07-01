@@ -1,6 +1,6 @@
-from loaders.package.b_modelling.abstract_model \
+from anomalywatchdog.modelling.abstract_model \
     import AnomalyDetectionModel
-from loaders.package.z_utils.create_sequences \
+from anomalywatchdog.utils.create_sequences \
     import create_sequences
 import pandas as pd
 import keras

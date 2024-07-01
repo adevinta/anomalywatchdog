@@ -1,7 +1,7 @@
 import pandas as pd
-from loaders.package.c_engine.model_trainer \
+from anomalywatchdog.engine.model_trainer \
     import ModelTrainer
-from loaders.package.c_engine.model_predictor \
+from anomalywatchdog.engine.model_predictor \
     import ModelPredictor
 
 MODELS_TO_USE = ["prophet", "auto_arima"]

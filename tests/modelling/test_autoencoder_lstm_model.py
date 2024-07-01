@@ -1,4 +1,4 @@
-from loaders.package.b_modelling.autoencoder_lstm_model \
+from anomalywatchdog.modelling.autoencoder_lstm_model \
     import AutoEncoderLSTMModel
 import pandas as pd
 

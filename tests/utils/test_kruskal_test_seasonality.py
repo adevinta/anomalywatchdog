@@ -1,5 +1,5 @@
 import pandas as pd
-from loaders.package.z_utils.kruskal_test_seasonality \
+from anomalywatchdog.utils.kruskal_test_seasonality \
     import kruskal_test_seasonality
 
 
