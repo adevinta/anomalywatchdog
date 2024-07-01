@@ -1,19 +1,64 @@
+from anomalywatchdog.data_treatment.model_updater\
+    import ModelUpdater
 import pandas as pd
-from anomalywatchdog.utils.create_fourier_terms \
-    import create_fourier_terms
 
+GRANULARITY = 'M'
+CONFIG = {
+    "models_to_use":{
+        "prophet",
+        "auto_arima"
+    },
+    "ts_seasonality":{
+        "weekly_seasonality": False,
+        "monthly_seasonality": False,
+        "yearly_seasonality": False,
+    },
+    "prophet":{
+        "weekly_seasonality": False,
+        "monthly_seasonality": False,
+        "yearly_seasonality": False,
+    },
+    "auto_arima":{
+        "weekly_seasonality": False,
+        "monthly_seasonality": False,
+        "yearly_seasonality": False
+    }
+}
+CONFIG_EXPECTED = {
+    "models_to_use":{
+        "prophet",
+        "auto_arima"
+    },
+    "ts_seasonality":{
+        "weekly_seasonality": False,
+        "monthly_seasonality": False,
+        "yearly_seasonality": True,
+    },
+    "prophet":{
+        "weekly_seasonality": False,
+        "monthly_seasonality": False,
+        "yearly_seasonality": True,
+    },
+    "auto_arima":{
+        "weekly_seasonality": False,
+        "monthly_seasonality": False,
+        "yearly_seasonality": True
+    }
+}
 
-FREQ=1
-K=1
+def test_model_updater(
+):
 
-def test_create_fourier_terms():
-    # -- Initialize input checker
-    df_fourier = create_fourier_terms(input_df_value(), freq=FREQ, K=K)
-    # -- Check df and columns
+    model_updater = ModelUpdater(
+            df=input_df_value(),
+            granularity=GRANULARITY,
+            config=CONFIG
+        )
     pd.testing.assert_frame_equal(
-        df_fourier,
-        expected_df()
+        pd.DataFrame([model_updater.config == CONFIG_EXPECTED]),
+        pd.DataFrame([True])
     )
+
 
 def input_df_value():
     date_list = [
@@ -95,52 +140,3 @@ def input_df_value():
     return pd.DataFrame(
         {'date': pd.to_datetime(date_list), 'value': value_list}
     )
-
-def expected_df():
-    sin_1_1_list = [
-         0.000000e+00,
-        -2.449294e-16,
-        -4.898587e-16,
-        -7.347881e-16,
-        -9.797174e-16,
-        -1.224647e-15,
-        -1.469576e-15,
-        -1.714506e-15,
-        -1.959435e-15,
-        -2.204364e-15,
-        -2.449294e-15,
-        -9.799650e-15,
-        -2.939152e-15,
-         3.921346e-15,
-        -3.429011e-15,
-        -1.077937e-14,
-        -3.918870e-15,
-         2.941628e-15,
-        -4.408728e-15,
-        -1.175909e-14,
-        -4.898587e-15,
-         1.961911e-15,
-        -1.959930e-14,
-        -1.273880e-14,
-        -5.878305e-15,
-         9.821934e-16,
-         7.842691e-15,
-        -1.371852e-14,
-        -6.858022e-15,
-         2.475923e-18,
-        -2.155874e-14,
-        -1.469824e-14,
-        -7.837740e-15,
-        -9.772415e-16,
-         5.883256e-15,
-        -1.567795e-14,
-    ]
-    cos_1_1_list = [
-        1.0 +i*0 for i in range(len(sin_1_1_list))
-    ]
-    return pd.DataFrame(
-        {'sin_1_1': sin_1_1_list, 'cos_1_1': cos_1_1_list}
-    )
-
-
-

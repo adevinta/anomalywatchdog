@@ -1,7 +1,5 @@
-from anomalywatchdog.modelling.abstract_model \
-    import AnomalyDetectionModel
-from anomalywatchdog.utils.create_sequences \
-    import create_sequences
+from anomalywatchdog.modelling.abstract_model import AnomalyDetectionModel
+from anomalywatchdog.utils.create_sequences import create_sequences
 import pandas as pd
 import keras
 from keras import layers
@@ -18,14 +16,10 @@ def set_seed(seed=42):
 set_seed(42)
 
 
-class AutoEncoderConvModel(AnomalyDetectionModel):
-    def __init__(self,
-                 *args,
-                 **kwargs
-                 ):
-        super(AutoEncoderConvModel, self).__init__(*args, **kwargs)
+class AutoEncoderLSTMModel(AnomalyDetectionModel):
+    def __init__(self, *args, **kwargs):
+        super(AutoEncoderLSTMModel, self).__init__(*args, **kwargs)
         # -- Treat data
-        #self.df_train = self.df[["date","value"]].copy()
         self.df_train = self.df.copy()
         self.df_train.sort_values('date', inplace=True)
         self.df_train.set_index('date', inplace=True)
@@ -47,77 +41,54 @@ class AutoEncoderConvModel(AnomalyDetectionModel):
             dict_params=self.dict_params
         )
 
-    def fit_model(self, df_train, dict_params:dict):
+    def fit_model(self, df_train, dict_params: dict):
         # -- Create sequences of fit
         df_seq_values = create_sequences(
             values=self.df_train.values,
-            time_steps=(
+            time_steps= (
                 self.dict_params["timesteps"][self.dict_params['granularity']]
             )
         )
         # -- AutoEncoder
-        autoencoder_conv = keras.Sequential(
+        autoencoder_lstm = keras.Sequential(
             [
                 layers.Input(
                     shape=(df_seq_values.shape[1], df_seq_values.shape[2])
                 ),
-                layers.Conv1D(
-                    filters=32,
-                    kernel_size=7,
-                    padding="same",
-                    strides=2,
+                layers.LSTM(
+                    units=128,
                     activation=dict_params["activation"],
+                    return_sequences=True
                 ),
                 layers.Dropout(rate=0.2),
-                layers.Conv1D(
-                    filters=16,
-                    kernel_size=7,
-                    padding="same",
-                    strides=2,
+                layers.LSTM(
+                    units=64,
                     activation=dict_params["activation"],
+                    return_sequences=False
                 ),
-                layers.Conv1D(
-                    filters=8,
-                    kernel_size=7,
-                    padding="same",
-                    strides=2,
+                layers.RepeatVector(df_seq_values.shape[1]),
+                layers.LSTM(
+                    units=64,
                     activation=dict_params["activation"],
-                ),
-                layers.Conv1DTranspose(
-                    filters=8,
-                    kernel_size=7,
-                    padding="same",
-                    strides=2,
-                    activation=dict_params["activation"],
+                    return_sequences=True
                 ),
                 layers.Dropout(rate=0.2),
-                layers.Conv1DTranspose(
-                    filters=16,
-                    kernel_size=7,
-                    padding="same",
-                    strides=2,
+                layers.LSTM(
+                    units=128,
                     activation=dict_params["activation"],
+                    return_sequences=True
                 ),
-                layers.Dropout(rate=0.2),
-                layers.Conv1DTranspose(
-                    filters=32,
-                    kernel_size=7,
-                    padding="same",
-                    strides=2,
-                    activation=dict_params["activation"],
-                ),
-                layers.Conv1DTranspose(filters=1, kernel_size=7,
-                                       padding="same"),
+                layers.TimeDistributed(layers.Dense(df_seq_values.shape[2]))
             ]
         )
-        autoencoder_conv.compile(
+        autoencoder_lstm.compile(
             optimizer=keras.optimizers.Adam(
                 learning_rate=dict_params["learning_rate"]
             ),
             loss=dict_params["loss"]
         )
 
-        autoencoder_conv.fit(
+        autoencoder_lstm.fit(
             df_seq_values,
             df_seq_values,
             epochs=dict_params["epochs"],
@@ -133,8 +104,7 @@ class AutoEncoderConvModel(AnomalyDetectionModel):
                                                   patience=15, mode="min")
             ],
         )
-        return autoencoder_conv
-
+        return autoencoder_lstm
 
     def get_anomalies(self):
         # -- Create sequences of fit
@@ -178,6 +148,5 @@ class AutoEncoderConvModel(AnomalyDetectionModel):
             [self.df[['date', 'value']], df_anomaly['anomaly']],
             axis=1)
         df_anomaly['date'] = pd.to_datetime(df_anomaly['date'])
-        df_anomaly['model'] = 'autoencoder_conv'
+        df_anomaly['model'] = 'autoencoder_lstm'
         self.df = df_anomaly.copy()
-

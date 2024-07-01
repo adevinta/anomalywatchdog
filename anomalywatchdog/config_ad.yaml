@@ -1,0 +1,64 @@
+models_to_use: [
+    "autoencoder_lstm",
+    "autoencoder_conv",
+    "prophet",
+    "auto_arima"
+]
+ts_seasonality:
+  weekly_seasonality: False
+  monthly_seasonality: False
+  yearly_seasonality: False
+autoencoder_conv:
+    granularity: 'D'
+    timesteps:
+      D: 120  #steps back in the TS in each step
+      W: 24
+      M: 8
+    activation: 'relu'
+    loss: 'mse'
+    epochs: 100
+    batch_size:
+      D: 128
+      W: 32
+      M: 12
+    validation_split: 0.1
+    learning_rate: 0.001
+    quantile: 0.75
+    quantile_multiplier: 1.5
+    features:
+      holidays: True
+autoencoder_lstm:
+    granularity: 'D'
+    timesteps:
+      D: 30  #steps back in the TS in each step
+      W: 12
+      M: 8
+    activation: 'relu'
+    loss: 'mse'
+    epochs: 50
+    batch_size:
+      D: 32
+      W: 16
+      M: 12
+    validation_split: 0.2
+    learning_rate: 0.001
+    quantile: 0.75
+    quantile_multiplier: 1.5
+    features:
+      holidays: True
+prophet:
+  weekly_seasonality: False
+  monthly_seasonality: False
+  yearly_seasonality: False
+  seasonality_mode: "additive"
+  interval_width: 0.95
+  changepoint_range: 0.8
+  features:
+    holidays: True
+auto_arima:
+  weekly_seasonality: False
+  monthly_seasonality: False
+  yearly_seasonality: False
+  features:
+    holidays: True
+

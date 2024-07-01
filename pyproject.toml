@@ -8,6 +8,15 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
+pyspark = "3.2.1"
+PyYAML = "^6.0"
+pandas = "1.5.2"
+scikit-learn = "0.24.2"
+tensorflow = "^2.16.1"
+prophet = "^1.1.5"
+pmdarima = "^2.0.4"
+spicy = "^0.16.0"
+holidays = "^0.50"
 
 
 [tool.poetry.group.dev.dependencies]

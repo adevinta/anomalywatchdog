@@ -1,19 +1,33 @@
-from anomalywatchdog.modelling.auto_arima_model \
-    import AutoArimaModel
+from anomalywatchdog.modelling.autoencoder_lstm_model \
+    import AutoEncoderLSTMModel
 import pandas as pd
 
 DICT_PARAMS = {
-    "weekly_seasonality": False,
-    "monthly_seasonality": False,
-    "yearly_seasonality": False,
-    "features": {
-        "holidays": False
-    }
+    "granularity": 'M',
+    "timesteps":
+        {"D": 30,
+         "W": 12,
+         "M": 8
+         },
+    "activation": 'relu',
+    "optimizer": 'adam',
+    "loss": "mse",
+    "epochs": 50,
+    "batch_size":
+        {"D": 32,
+         "W": 16,
+         "M": 12
+         },
+    "validation_split": 0.2,
+    "learning_rate": 0.001,
+    "quantile": 0.75,
+    "quantile_multiplier": 1.5,
+    "features":
+        {"holidays": False}
 }
 
-
-def test_autoarima_model():
-    model = AutoArimaModel(
+def test_autoencoder_lstm_model():
+    model = AutoEncoderLSTMModel(
         df=input_df_value(),
         dict_params=DICT_PARAMS)
     model.get_anomalies()
@@ -99,8 +113,48 @@ def input_df_value():
         9920757.596,
         28534471.96,
     ]
+    holiday_list = [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+    ]
     return pd.DataFrame(
-        {'date': pd.to_datetime(date_list), 'value': value_list}
+        {'date': pd.to_datetime(date_list),
+         'value': value_list,
+         'holiday': holiday_list}
     )
 
 
@@ -138,12 +192,13 @@ def expected_df():
         False,
         True,
         False,
+        False,
         True,
         False,
         False,
-        False,
-        False
+        True
     ]
+    del df['holiday']
     df['anomaly'] = anomaly_list
-    df['model'] = 'auto_arima'
+    df['model'] = 'autoencoder_lstm'
     return df

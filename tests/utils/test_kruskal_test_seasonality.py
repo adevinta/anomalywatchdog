@@ -1,58 +1,60 @@
 import pandas as pd
-from anomalywatchdog.utils.create_fourier_terms \
-    import create_fourier_terms
+from anomalywatchdog.utils.kruskal_test_seasonality \
+    import kruskal_test_seasonality
 
 
-FREQ=1
-K=1
 
-def test_create_fourier_terms():
+def test_kruskal_test_seasonality():
     # -- Initialize input checker
-    df_fourier = create_fourier_terms(input_df_value(), freq=FREQ, K=K)
+    kruskal_value =  kruskal_test_seasonality(
+        df=input_df_value(),
+        column_period="date",
+        column_value="value"
+    )
     # -- Check df and columns
     pd.testing.assert_frame_equal(
-        df_fourier,
-        expected_df()
+        pd.DataFrame([kruskal_value]),
+        pd.DataFrame([True])
     )
 
 def input_df_value():
     date_list = [
-        "2021-01-01",
-        "2021-02-01",
-        "2021-03-01",
-        "2021-04-01",
-        "2021-05-01",
-        "2021-06-01",
-        "2021-07-01",
-        "2021-08-01",
-        "2021-09-01",
-        "2021-10-01",
-        "2021-11-01",
-        "2021-12-01",
-        "2022-01-01",
-        "2022-02-01",
-        "2022-03-01",
-        "2022-04-01",
-        "2022-05-01",
-        "2022-06-01",
-        "2022-07-01",
-        "2022-08-01",
-        "2022-09-01",
-        "2022-10-01",
-        "2022-11-01",
-        "2022-12-01",
-        "2023-01-01",
-        "2023-02-01",
-        "2023-03-01",
-        "2023-04-01",
-        "2023-05-01",
-        "2023-06-01",
-        "2023-07-01",
-        "2023-08-01",
-        "2023-09-01",
-        "2023-10-01",
-        "2023-11-01",
-        "2023-12-01"
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2021",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2022",
+        "2023",
+        "2023",
+        "2023",
+        "2023",
+        "2023",
+        "2023",
+        "2023",
+        "2023",
+        "2023",
+        "2023",
+        "2023",
+        "2023"
     ]
     value_list = [
         5830302.908,

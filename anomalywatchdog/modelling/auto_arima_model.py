@@ -1,6 +1,6 @@
-from loaders.package.b_modelling.abstract_model \
+from anomalywatchdog.modelling.abstract_model \
     import AnomalyDetectionModel
-from loaders.package.z_utils.create_fourier_terms \
+from anomalywatchdog.utils.create_fourier_terms \
     import create_fourier_terms
 import pandas as pd
 from pmdarima.arima import auto_arima
