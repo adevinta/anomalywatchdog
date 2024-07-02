@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.0.2 (2024-07-02)
+
+### Fix
+
+* fix: Test new tag ([`f64916e`](https://github.com/adevinta/anomalywatchdog/commit/f64916e5aadb7cc226d865b93c2b3a9f1e42b7a6))
+
+### Unknown
+
+* Merge pull request #4 from adevinta/feature/fix_poetry
+
+fix: Test new tag ([`1fe9210`](https://github.com/adevinta/anomalywatchdog/commit/1fe9210c75bd6953c0868a167eeb16b1d7058b70))
+
 ## v0.0.1 (2024-07-02)
 
 ### Fix
