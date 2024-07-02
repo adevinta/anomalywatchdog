@@ -56,4 +56,3 @@ anomaly_watchdog.df_anomaly
 # -- AnomalyWatchdog output for each of the dimensions (only if columns_dimension is specified)
 anomaly_watchdog.df_anomaly_dimension
 ```
-
