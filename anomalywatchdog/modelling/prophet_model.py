@@ -6,10 +6,12 @@ import numpy as np
 import tensorflow as tf
 import random
 
+
 def set_seed(seed=42):
     np.random.seed(seed)
     tf.random.set_seed(seed)
     random.seed(seed)
+
 
 set_seed(42)
 
@@ -26,9 +28,9 @@ class ProphetModel(AnomalyDetectionModel):
             dict_params=self.dict_params
         )
 
-    def fit_model(self, df_train:pd.DataFrame, dict_params:dict):
+    def fit_model(self, df_train: pd.DataFrame, dict_params: dict):
         # -- column names
-        df_train.rename(columns={'date':'ds', 'value':'y'}, inplace=True)
+        df_train.rename(columns={'date': 'ds', 'value': 'y'}, inplace=True)
         # -- Create tensor
         df_train['ds'] = pd.to_datetime(df_train['ds'])
         df_train['ds'] = df_train['ds'].dt.tz_localize(None)
@@ -53,7 +55,6 @@ class ProphetModel(AnomalyDetectionModel):
             prophet.add_country_holidays(country_name='Spain')
         return prophet.fit(df_train[["ds", "y"]])
 
-
     def get_anomalies(self):
         # -- Predict over train
         df_anomaly = self.model_fitted.predict(self.df)
@@ -67,7 +68,8 @@ class ProphetModel(AnomalyDetectionModel):
             'anomaly'
         ] = True
         # -- Tune output
-        df_anomaly.rename(columns={"ds":"date", "fact":"value"}, inplace=True)
+        df_anomaly.rename(columns={"ds": "date", "fact": "value"},
+                          inplace=True)
         df_anomaly = df_anomaly[["date", "value", "anomaly"]].copy()
         df_anomaly['model'] = 'prophet'
         df_anomaly['date'] = pd.to_datetime(df_anomaly['date'])

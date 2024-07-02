@@ -1,17 +1,19 @@
 from anomalywatchdog.modelling.abstract_model import AnomalyDetectionModel
 from anomalywatchdog.utils.create_sequences import create_sequences
+from anomalywatchdog.utils.data_normalizer import DataNormalizer
 import pandas as pd
 import keras
 from keras import layers
-from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import tensorflow as tf
 import random
+
 
 def set_seed(seed=42):
     np.random.seed(seed)
     tf.random.set_seed(seed)
     random.seed(seed)
+
 
 set_seed(42)
 
@@ -24,14 +26,13 @@ class AutoEncoderLSTMModel(AnomalyDetectionModel):
         self.df_train.sort_values('date', inplace=True)
         self.df_train.set_index('date', inplace=True)
         # -- Normalize data
-        scaler = MinMaxScaler()
-        self.df_train['value'] = scaler.fit_transform(
-            self.df_train[['value']]
+        self.df_train['value'] = DataNormalizer.normalization_standard(
+            self.df_train[['value']].values
         )
         # -- Select holiday features
         if self.dict_params['features']['holidays']:
-            self.df_train['holiday'] = scaler.fit_transform(
-                self.df_train[['holiday']]
+            self.df_train['holiday'] = DataNormalizer.normalization_standard(
+                self.df_train[['holiday']].values
             )
         else:
             self.df_train = self.df_train.drop(['holiday'], axis=1)
@@ -45,7 +46,7 @@ class AutoEncoderLSTMModel(AnomalyDetectionModel):
         # -- Create sequences of fit
         df_seq_values = create_sequences(
             values=self.df_train.values,
-            time_steps= (
+            time_steps=(
                 self.dict_params["timesteps"][self.dict_params['granularity']]
             )
         )
@@ -125,8 +126,8 @@ class AutoEncoderLSTMModel(AnomalyDetectionModel):
         # -- Get actuals vs reconstruction
         df_anomaly = pd.DataFrame({
             'date': df_seq_index.flatten(),
-            'actuals': df_seq_values[:,:,0].flatten(),
-            'reconstruction': df_seq_pred[:,:,0].flatten(),
+            'actuals': df_seq_values[:, :, 0].flatten(),
+            'reconstruction': df_seq_pred[:, :, 0].flatten(),
         })
         df_anomaly = df_anomaly.groupby('date')[
             ["actuals", "reconstruction"]].mean().reset_index()

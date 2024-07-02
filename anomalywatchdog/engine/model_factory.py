@@ -15,19 +15,19 @@ class ModelFactory:
             return AutoEncoderLSTMModel(
                 df=df_train.copy(),
                 dict_params=dict_config
-        )
+            )
         if model == "autoencoder_conv":
             return AutoEncoderConvModel(
                 df=df_train.copy(),
                 dict_params=dict_config
-        )
+            )
         if model == "prophet":
             return ProphetModel(
                 df=df_train.copy(),
                 dict_params=dict_config
-        )
+            )
         if model == "auto_arima":
             return AutoArimaModel(
                 df=df_train.copy(),
                 dict_params=dict_config
-        )
+            )

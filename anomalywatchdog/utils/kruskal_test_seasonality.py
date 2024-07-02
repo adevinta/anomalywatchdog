@@ -1,6 +1,7 @@
 import pandas as pd
 from spicy import stats
 
+
 def kruskal_test_seasonality(
         df: pd.DataFrame,
         column_period: str,

@@ -8,12 +8,15 @@ import numpy as np
 import tensorflow as tf
 import random
 
+
 def set_seed(seed=42):
     np.random.seed(seed)
     tf.random.set_seed(seed)
     random.seed(seed)
 
+
 set_seed(42)
+
 
 class AutoArimaModel(AnomalyDetectionModel):
     def __init__(self,
@@ -26,7 +29,7 @@ class AutoArimaModel(AnomalyDetectionModel):
             df_train=self.df,
             dict_params=self.dict_params)
 
-    def fit_model(self, df_train:pd.DataFrame, dict_params:dict):
+    def fit_model(self, df_train: pd.DataFrame, dict_params: dict):
         list_df_fourier = []
         if dict_params['weekly_seasonality']:
             list_df_fourier.append(create_fourier_terms(self.df, freq=7, K=3))
@@ -52,7 +55,6 @@ class AutoArimaModel(AnomalyDetectionModel):
                 df_train['value'], seasonal=False, suppress_warnings=True,
                 exogenous=df_exogenous
             )
-
 
     def get_anomalies(self):
         # -- Predict over train

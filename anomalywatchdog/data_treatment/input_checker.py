@@ -2,6 +2,7 @@ import pandas as pd
 from pyspark.sql import DataFrame
 from typing import Union, List
 
+
 class InputChecker:
 
     def __init__(
@@ -17,7 +18,7 @@ class InputChecker:
     ):
         # -- Main inputs
         self.df = df
-        self.column_date= column_date
+        self.column_date = column_date
         self.column_target = column_target
         self.granularity = granularity
         self.columns_dimension = columns_dimension
@@ -40,11 +41,10 @@ class InputChecker:
             self.__check_models_to_use()
             self.__update_config()
 
-
     def __check_df_instance(self):
         if (
-            not isinstance(self.df , pd.DataFrame)
-            and isinstance(self.df , DataFrame)
+            not isinstance(self.df, pd.DataFrame)
+            and isinstance(self.df, DataFrame)
         ):
             self.df = self.df.toPandas()
         elif (
@@ -70,7 +70,7 @@ class InputChecker:
                 raise ValueError(error_string)
 
     @staticmethod
-    def __check_column_list_types(list_name:List[str]):
+    def __check_column_list_types(list_name: List[str]):
         if not isinstance(list_name, list):
             error_string = (
                     f"Input parameter {list_name} is "
@@ -104,7 +104,7 @@ class InputChecker:
                 [col.lower() for col in self.columns_dimension]
             )
         for col in self.df.columns:
-            self.df.rename(columns={col:col.lower()}, inplace=True)
+            self.df.rename(columns={col: col.lower()}, inplace=True)
         if self.models_to_use:
             self.models_to_use = (
                 [model.lower() for model in self.models_to_use]

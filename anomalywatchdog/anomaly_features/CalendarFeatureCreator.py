@@ -1,12 +1,12 @@
 import pandas as pd
-import holidays
 from datetime import date
 from datetime import timedelta
+import holidays
 
 
 class CalendarFeatureCreator:
 
-    def __init__(self, df: pd.DataFrame, country:str):
+    def __init__(self, df: pd.DataFrame, country: str):
         # -- Main data
         self.df = df
         self.country = country
@@ -54,7 +54,7 @@ class CalendarFeatureCreator:
             df_ts['date_max_week'] = df_ts['date'] + timedelta(days=6)
             # ----- Cartesian
             df_holiday_granular.rename(
-                columns={'date':'date_holidays'}, inplace=True
+                columns={'date': 'date_holidays'}, inplace=True
             )
             df_ts = df_ts.merge(
                 df_holiday_granular,
@@ -63,8 +63,8 @@ class CalendarFeatureCreator:
             )
             # ----- Filter holidays within each period of the week
             df_ts = df_ts.loc[
-                (df_ts['date_holidays']>=df_ts['date'])
-                & (df_ts['date_holidays']<=df_ts['date_max_week'])].copy()
+                (df_ts['date_holidays'] >= df_ts['date'])
+                & (df_ts['date_holidays'] <= df_ts['date_max_week'])].copy()
             # ----- Aggregate holidays by week
             df_holiday_granular = (
                 df_ts.groupby('date')['holiday'].sum().reset_index()

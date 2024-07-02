@@ -195,8 +195,8 @@ def expected_df():
         False,
         True,
         False,
-        False,
-        True
+        True,
+        False
     ]
     del df['holiday']
     df['anomaly'] = anomaly_list
