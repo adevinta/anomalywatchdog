@@ -17,6 +17,7 @@ pmdarima = "^2.0.4"
 spicy = "^0.16.0"
 holidays = "^0.50"
 wheel = "^0.43.0"
+scikit-learn = "^1.4.2"
 
 
 [tool.poetry.group.dev.dependencies]
