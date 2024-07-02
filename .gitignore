@@ -6,3 +6,6 @@
 .python-version
 .venv
 dist
+newenv
+anomalywatchdog/z_data_test
+main.py

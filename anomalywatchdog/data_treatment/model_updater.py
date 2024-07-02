@@ -2,6 +2,7 @@ import pandas as pd
 from anomalywatchdog.utils.kruskal_test_seasonality \
     import kruskal_test_seasonality
 
+
 class ModelUpdater:
 
     def __init__(
@@ -65,6 +66,3 @@ class ModelUpdater:
             self.config[model]['granularity'] = self.granularity
         if model == 'autoencoder_lstm':
             self.config[model]['granularity'] = self.granularity
-
-
-

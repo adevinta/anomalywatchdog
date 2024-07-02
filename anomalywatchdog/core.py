@@ -94,12 +94,12 @@ class AnomalyWatchdog:
 
     def __detect_anomalies(
             self,
-            df_handled:pd.DataFrame,
-            list_models:list[str]
+            df_handled: pd.DataFrame,
+            list_models: list[str]
     ) -> pd.DataFrame():
         self.log.info(">> 2.1. Train Models")
         model_trainer = ModelTrainer(
-            model_names=list_models, #self.config['models_to_use'],
+            model_names=list_models,
             df_train=df_handled.copy(),
             config=self.config
         )
@@ -112,10 +112,10 @@ class AnomalyWatchdog:
 
     def __detect_granular_anomalies(
             self,
-            df_predictions:pd.DataFrame,
-            columns_dimension:list,
-            granularity:str,
-            check_history:bool
+            df_predictions: pd.DataFrame,
+            columns_dimension: list,
+            granularity: str,
+            check_history: bool
     ) -> pd.DataFrame():
         df_dimension = pd.DataFrame()
         if columns_dimension is not None:
@@ -123,16 +123,13 @@ class AnomalyWatchdog:
             for model in df_predictions["model"].unique():
                 is_anomaly_max_date = (
                     df_predictions
-                    .loc[(df_predictions['model']==model) &
-                         (df_predictions['date']==self.max_date),
-                        'anomaly'
-                    ].sum()
+                    .loc[(df_predictions['model'] == model) &
+                         (df_predictions['date'] == self.max_date),
+                         'anomaly'].sum()
                 ) > 0
                 is_anomaly_history = (
                     df_predictions
-                    .loc[(df_predictions['model']==model),
-                        'anomaly'
-                    ].sum()
+                    .loc[(df_predictions['model'] == model), 'anomaly'].sum()
                 ) > 0
                 condition1 = check_history and is_anomaly_history
                 condition2 = not check_history and is_anomaly_max_date
@@ -147,8 +144,7 @@ class AnomalyWatchdog:
                             df_dimension = (
                                 self.df_input
                                 .loc[self.df_input[column_dimension]
-                                     ==dimension_value,
-                                       ["date", "value"]]
+                                     == dimension_value, ["date", "value"]]
                                 .reset_index(drop=True)
                                 .copy()
                             )

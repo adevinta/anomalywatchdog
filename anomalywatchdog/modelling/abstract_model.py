@@ -5,12 +5,12 @@ import pandas as pd
 
 class AnomalyDetectionModel(ABC):
 
-    def __init__(self, df:pd.DataFrame, dict_params:dict):
+    def __init__(self, df: pd.DataFrame, dict_params: dict):
         self.df = df
         self.dict_params = dict_params
 
     @abstractmethod
-    def fit_model(self, df_train:pd.DataFrame, dict_params:dict):
+    def fit_model(self, df_train: pd.DataFrame, dict_params: dict):
         pass
 
     @abstractmethod

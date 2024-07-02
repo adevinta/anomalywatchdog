@@ -1,14 +1,15 @@
 # -- Packages
 import pandas as pd
 
+
 class DataADHandler:
     """
     This class creates a data set that cleans the Data for Anomaly Detection
     """
     def __init__(
             self,
-            df:pd.DataFrame,
-            granularity:str = 'D'
+            df: pd.DataFrame,
+            granularity: str = 'D'
     ):
         # -- Main data and parameters
         self.df = df
@@ -31,7 +32,7 @@ class DataADHandler:
         elif self.granularity == 'M':
             dates = pd.date_range(start=min_date,
                                   end=max_date, freq="MS").tolist()
-        else :
+        else:
             dates = pd.date_range(start=min_date,
                                   end=max_date, freq="D").tolist()
         # -- dates df
@@ -60,7 +61,3 @@ class DataADHandler:
                 .sum()
                 .reset_index()
         )
-
-
-
-
