@@ -26,9 +26,10 @@ class AnomalyWatchdog:
             column_date: str,
             column_target: str,
             granularity: str,
-            columns_dimension: list[str] = None,
-            models_to_use: List[str] = ['auto_arima', 'Prophet'],
-            check_history: bool = False
+            columns_dimension: list[str] = [],
+            start_date: Union[str, None] = None,
+            end_date: Union[str, None] = None,
+            models_to_use: List[str] = ['auto_arima', 'Prophet']
     ):
         # -- Initialize logs
         self.log = Logger(name="anomaly_detector")
@@ -44,7 +45,8 @@ class AnomalyWatchdog:
             columns_dimension=columns_dimension,
             granularity=granularity,
             models_to_use=models_to_use,
-            check_history=check_history,
+            start_date=start_date,
+            end_date=end_date,
             config=self.config
         )
         # -- Update inputs
@@ -53,6 +55,8 @@ class AnomalyWatchdog:
         self.columns_dimension = input_checker.columns_dimension
         self.config = input_checker.config
         self.granularity = granularity
+        self.start_date = input_checker.start_date
+        self.end_date = input_checker.end_date
         self.df_input.rename(
             columns={column_date: "date", column_target: "value"},
             inplace=True
@@ -86,9 +90,20 @@ class AnomalyWatchdog:
         self.df_anomaly_dimension = self.__detect_granular_anomalies(
             df_predictions=self.df_anomaly.copy(),
             columns_dimension=self.columns_dimension,
-            granularity=self.granularity,
-            check_history=check_history
+            granularity=self.granularity
         )
+        self.log.info(">> 3. Filter selected dates")
+        print('print2')
+        if self.start_date:
+            self.df_anomaly = self.df_anomaly.loc[
+                (self.df_anomaly['date'] >= self.start_date) &
+                (self.df_anomaly['date'] <= self.end_date)
+                ].copy()
+            if len(self.df_anomaly_dimension) > 0:
+                self.df_anomaly_dimension = self.df_anomaly_dimension.loc[
+                    (self.df_anomaly_dimension['date'] >= self.start_date) &
+                    (self.df_anomaly_dimension['date'] <= self.end_date)
+                    ].copy()
         print(self.df_anomaly)
         print(self.df_anomaly_dimension)
 
@@ -114,26 +129,24 @@ class AnomalyWatchdog:
             self,
             df_predictions: pd.DataFrame,
             columns_dimension: list,
-            granularity: str,
-            check_history: bool
+            granularity: str
     ) -> pd.DataFrame():
         df_dimension = pd.DataFrame()
-        if columns_dimension is not None:
+        if len(columns_dimension) > 0:
             list_df_dimension = []
-            for model in df_predictions["model"].unique():
-                is_anomaly_max_date = (
-                    df_predictions
-                    .loc[(df_predictions['model'] == model) &
-                         (df_predictions['date'] == self.max_date),
-                         'anomaly'].sum()
-                ) > 0
-                is_anomaly_history = (
-                    df_predictions
-                    .loc[(df_predictions['model'] == model), 'anomaly'].sum()
-                ) > 0
-                condition1 = check_history and is_anomaly_history
-                condition2 = not check_history and is_anomaly_max_date
-                if condition1 or condition2:
+            filtered_df = df_predictions.copy()
+            if self.start_date:
+                filtered_df = filtered_df.loc[
+                    (filtered_df['date'] <= self.end_date) &
+                    (filtered_df['date'] >= self.start_date)
+                    ]
+            for model in filtered_df["model"].unique():
+                is_anomaly_in_interval = (
+                        filtered_df.loc[filtered_df['model'] == model,
+                                        ['anomaly']].sum()
+                        > 0
+                )
+                if is_anomaly_in_interval:
                     for column_dimension in columns_dimension:
                         list_dimension_value = [
                             dimension for dimension

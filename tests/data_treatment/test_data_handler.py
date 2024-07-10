@@ -71,7 +71,7 @@ def expected_df_monthly():
         3400257.853
     ]
     return pd.DataFrame(
-        {'date': pd.to_datetime(date_list, utc=True),
+        {'date': pd.to_datetime(date_list),
          'value': value_list}
     )
 
@@ -113,7 +113,7 @@ def expected_df_weekly():
         3400257.853
     ]
     return pd.DataFrame(
-        {'date': pd.to_datetime(date_list, utc=True),
+        {'date': pd.to_datetime(date_list),
          'value': value_list}
     )
 
@@ -155,6 +155,6 @@ def expected_df_daily():
         3400257.853
     ]
     return pd.DataFrame(
-        {'date': pd.to_datetime(date_list, utc=True),
+        {'date': pd.to_datetime(date_list),
          'value': value_list}
     )

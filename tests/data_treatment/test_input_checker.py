@@ -7,7 +7,6 @@ INPUT_CONFIG = {"models_to_use": ["Autoencoder_basic", "Prophet"]}
 EXPECTED_CONFIG = {"models_to_use": ["autoencoder_basic", "prophet"]}
 
 
-
 def test_input_checker():
     # -- Initialize input checker
     input_checker = InputChecker(
@@ -17,7 +16,6 @@ def test_input_checker():
         granularity='M',
         columns_dimension=['Col_dim'],
         models_to_use=INPUT_CONFIG["models_to_use"],
-        check_history=True,
         config=INPUT_CONFIG
     )
     # -- Check df and columns
