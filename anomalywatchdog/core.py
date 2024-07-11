@@ -145,7 +145,7 @@ class AnomalyWatchdog:
                         filtered_df.loc[filtered_df['model'] == model,
                                         ['anomaly']].sum()
                         > 0
-                )
+                ).bool()
                 if is_anomaly_in_interval:
                     for column_dimension in columns_dimension:
                         list_dimension_value = [
