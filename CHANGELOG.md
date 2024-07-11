@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.0.4 (2024-07-11)
+
+### Fix
+
+* fix: Error in condition for disaggregation analysis ([`25be536`](https://github.com/adevinta/anomalywatchdog/commit/25be53672479c7a4b9d1dd69dfd551f3c694ba61))
+
+### Unknown
+
+* Merge pull request #6 from adevinta/feature/data_range
+
+fix: Error in condition for disaggregation analysis ([`83b9c43`](https://github.com/adevinta/anomalywatchdog/commit/83b9c430d5b9f049dc28108ccfd7e5b70eb1df9d))
+
 ## v0.0.3 (2024-07-11)
 
 ### Fix
