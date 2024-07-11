@@ -46,7 +46,6 @@ AnomalyWatchdog has the following inputs:
 - columns_dimension: List of strings containing the column dimension names representing the disaggregation of the data if any.
 - start_date: String containing the start date to return anomalies. Values should be str in format YYYY-MM-DD (i.e. 2020-01-30). If None, it returns all the history.
 - end_date: String containing the end date to return anomalies. Values should be str in format YYYY-MM-DD (i.e. 2020-01-30). If None, it returns all the history.
-- check_history: Boolean that checks outliers in the complete history of the time series if True, and only in the last day if false (default).
 - models_to_use: List of strings containing the models available. Models available are "autoencoder_basic", "autoencoder_lstm", "prophet" and "auto_arima". If non value is provided, AnomalyWatchdog performs with only "prophet" and "auto_arima".
 
 ### Outputs
