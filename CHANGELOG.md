@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## v0.0.3 (2024-07-11)
+
+### Fix
+
+* fix: Update README ([`ff9b29c`](https://github.com/adevinta/anomalywatchdog/commit/ff9b29ca6c954d44ff68a1854e7046587275aaeb))
+
+* fix: Update README ([`a31083f`](https://github.com/adevinta/anomalywatchdog/commit/a31083f7d934e18d1ab7d0cfa43345d36fcf46a9))
+
+* fix: Substitute check_history by start_date and end_date ([`7e05400`](https://github.com/adevinta/anomalywatchdog/commit/7e05400a616dc563a6916bb0b59a6dcff634d97d))
+
+### Unknown
+
+* Merge pull request #5 from adevinta/feature/data_range
+
+Add Date Range ([`3351aef`](https://github.com/adevinta/anomalywatchdog/commit/3351aef72bd2377cff37da5210a117ce89fae05e))
+
 ## v0.0.2 (2024-07-02)
 
 ### Fix
