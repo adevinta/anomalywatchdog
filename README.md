@@ -31,8 +31,9 @@ anomaly_watchdog = AnomalyWatchdog(
             column_target: str,
             granularity: str,
             columns_dimension: list[str] = None,
+            start_date: Union[str, None] = None,
+            end_date: Union[str, None] = None,
             models_to_use: List[str] = ['auto_arima', 'Prophet'],
-            check_history: bool = False
         )
 ```
 
@@ -43,8 +44,9 @@ AnomalyWatchdog has the following inputs:
 - column_target: String containing the column name of the time series values. Values should be float or int.
 - granularity: String containing the granularity of the time series data. Values available are "D" for daily, "M" for monthly and "W" for weekly data.
 - columns_dimension: List of strings containing the column dimension names representing the disaggregation of the data if any.
+- start_date: String containing the start date to return anomalies. Values should be str in format YYYY-MM-DD (i.e. 2020-01-30). If None, it returns all the history.
+- end_date: String containing the end date to return anomalies. Values should be str in format YYYY-MM-DD (i.e. 2020-01-30). If None, it returns all the history.
 - models_to_use: List of strings containing the models available. Models available are "autoencoder_basic", "autoencoder_lstm", "prophet" and "auto_arima". If non value is provided, AnomalyWatchdog performs with only "prophet" and "auto_arima".
-- check_history: Boolean that checks outliers in the complete history of the time series if True, and only in the last day if false (default).
 
 ### Outputs
 AnomalyWatchdog has two outputs, one of which is only delivered if 

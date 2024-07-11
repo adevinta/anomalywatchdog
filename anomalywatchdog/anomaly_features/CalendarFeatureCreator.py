@@ -70,8 +70,7 @@ class CalendarFeatureCreator:
                 df_ts.groupby('date')['holiday'].sum().reset_index()
             )
         df_holiday_granular['date'] = pd.to_datetime(
-            df_holiday_granular['date'],
-            utc=True
+            df_holiday_granular['date']
         )
         self.df = self.df.merge(
             df_holiday_granular,

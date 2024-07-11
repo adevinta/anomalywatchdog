@@ -13,8 +13,9 @@ class InputChecker:
             granularity: str,
             columns_dimension: List[str],
             models_to_use: List[str],
-            check_history: bool,
-            config: dict
+            config: dict,
+            start_date: Union[str, None] = None,
+            end_date: Union[str, None] = None
     ):
         # -- Main inputs
         self.df = df
@@ -23,19 +24,22 @@ class InputChecker:
         self.granularity = granularity
         self.columns_dimension = columns_dimension
         self.models_to_use = models_to_use
-        self.check_history = check_history
+        self.start_date = start_date
+        self.end_date = end_date
         self.config = config
         # -- Preliminary Checks
         self.__check_df_instance()
         self.__check_columns_in_dataframe()
-        if self.columns_dimension is not None:
+        if len(self.columns_dimension) > 0:
             self.__check_column_list_types(self.columns_dimension)
         self.__check_column_str_type(self.column_target)
         self.__check_column_str_type(self.column_date)
         self.__enforce_lowercase()
         self.__check_granularity()
-        if self.check_history:
-            self.__check_check_history()
+        self.start_date = self.__check_date(self.start_date)
+        self.end_date = self.__check_date(self.end_date)
+        self.__check_dates_consistency()
+
         if self.models_to_use:
             self.__check_column_list_types(self.models_to_use)
             self.__check_models_to_use()
@@ -125,15 +129,6 @@ class InputChecker:
             )
             raise ValueError(error_string)
 
-    def __check_check_history(self):
-        if not isinstance(self.check_history, bool):
-            error_string = (
-                    "Input parameter check_history is " +
-                    f"{type(self.check_history)}. " +
-                    "Expected input type is bool."
-            )
-            raise TypeError(error_string)
-
     def __check_models_to_use(self):
         models_to_use_list = [
                 "autoencoder_basic",
@@ -153,3 +148,35 @@ class InputChecker:
     def __update_config(self):
         if self.models_to_use:
             self.config['models_to_use'] = self.models_to_use
+
+    @staticmethod
+    def __check_date(date_string: Union[str, None]):
+        if date_string:
+            formatting_error = (
+                f"Format for {date_string} not understood. "
+                f"Accepted format is 'YYYY-MM-DD'"
+                f"(e.g. 2021-03-28)."
+            )
+            try:
+                return pd.to_datetime(
+                    date_string,
+                    format="%Y-%m-%d"
+                )
+            except:
+                raise ValueError(formatting_error)
+
+    def __check_dates_consistency(self):
+        if not self.start_date and self.end_date:
+            self.start_date = self.end_date
+        if not self.end_date and self.start_date:
+            self.end_date = self.start_date
+
+        if self.start_date:
+            if (pd.to_datetime(self.end_date, format="%Y-%m-%d")
+                    < pd.to_datetime(self.start_date, format="%Y-%m-%d")):
+                formatting_error = (
+                    f"Value for end_date: {self.end_date} must be greater or "
+                    f"equal than start_date: {self.start_date}."
+                )
+                raise ValueError(formatting_error)
+

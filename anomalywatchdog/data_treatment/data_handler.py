@@ -49,7 +49,7 @@ class DataADHandler:
             how='left'
         )
         # -- set correct date format
-        self.df["date"] = pd.to_datetime(self.df["date"], utc=True)
+        self.df["date"] = pd.to_datetime(self.df["date"])
 
     def __get_ordered_dataframe(self):
         self.df.sort_values(self.group_columns, inplace=True)
