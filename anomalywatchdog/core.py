@@ -140,49 +140,52 @@ class AnomalyWatchdog:
                     (filtered_df['date'] <= self.end_date) &
                     (filtered_df['date'] >= self.start_date)
                     ]
-            for model in filtered_df["model"].unique():
-                is_anomaly_in_interval = (
-                        filtered_df.loc[filtered_df['model'] == model,
-                                        ['anomaly']].sum()
-                        > 0
-                ).bool()
-                if is_anomaly_in_interval:
-                    for column_dimension in columns_dimension:
-                        list_dimension_value = [
-                            dimension for dimension
-                            in self.df_input[column_dimension].unique()
-                            if dimension is not None
-                        ]
-                        for dimension_value in list_dimension_value:
-                            df_dimension = (
-                                self.df_input
-                                .loc[self.df_input[column_dimension]
-                                     == dimension_value, ["date", "value"]]
-                                .reset_index(drop=True)
-                                .copy()
-                            )
-                            data_ad_handler = DataADHandler(
-                                df=df_dimension,
-                                granularity=granularity
-                            )
-                            df = data_ad_handler.df_grouped.copy()
-                            df = create_features(df=df.copy(),
-                                                 granularity=self.granularity)
-                            df_predictions_element = self.__detect_anomalies(
-                                df_handled=df.copy(),
-                                list_models=[model]
-                            )
-                            print(df_predictions_element)
-                            df_predictions_element['dimension'] = (
-                                column_dimension
-                            )
-                            df_predictions_element['dimension_value'] = (
-                                dimension_value
-                            )
-                            list_df_dimension.append(df_predictions_element)
-                        df_dimension = pd.concat(list_df_dimension)
-                    return df_dimension
-                else:
-                    return df_dimension
+            if len(filtered_df["model"].unique()) > 0:
+                for model in filtered_df["model"].unique():
+                    is_anomaly_in_interval = (
+                            filtered_df.loc[filtered_df['model'] == model,
+                                            ['anomaly']].sum()
+                            > 0
+                    ).bool()
+                    if is_anomaly_in_interval:
+                        for column_dimension in columns_dimension:
+                            list_dimension_value = [
+                                dimension for dimension
+                                in self.df_input[column_dimension].unique()
+                                if dimension is not None
+                            ]
+                            for dimension_value in list_dimension_value:
+                                df_dimension = (
+                                    self.df_input
+                                    .loc[self.df_input[column_dimension]
+                                         == dimension_value, ["date", "value"]]
+                                    .reset_index(drop=True)
+                                    .copy()
+                                )
+                                data_ad_handler = DataADHandler(
+                                    df=df_dimension,
+                                    granularity=granularity
+                                )
+                                df = data_ad_handler.df_grouped.copy()
+                                df = create_features(df=df.copy(),
+                                                     granularity=self.granularity)
+                                df_predictions_element = self.__detect_anomalies(
+                                    df_handled=df.copy(),
+                                    list_models=[model]
+                                )
+                                print(df_predictions_element)
+                                df_predictions_element['dimension'] = (
+                                    column_dimension
+                                )
+                                df_predictions_element['dimension_value'] = (
+                                    dimension_value
+                                )
+                                list_df_dimension.append(df_predictions_element)
+                            df_dimension = pd.concat(list_df_dimension)
+                        return df_dimension
+                    else:
+                        return df_dimension
+            else:
+                return df_dimension
         else:
             return df_dimension
