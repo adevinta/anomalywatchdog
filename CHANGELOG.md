@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.0.5 (2024-07-24)
+
+### Fix
+
+* fix: error when no anomaly in dimensions ([`cc4e2b4`](https://github.com/adevinta/anomalywatchdog/commit/cc4e2b43121ebee3846553f5abc0e4a0d62ea0e9))
+
+### Unknown
+
+* Merge pull request #7 from adevinta/fix/error_no_anomaly_dimensions
+
+fix: error when no anomaly in dimensions ([`8fe27a4`](https://github.com/adevinta/anomalywatchdog/commit/8fe27a4e2f4d77df9b17e81041ae4f25b0f63555))
+
 ## v0.0.4 (2024-07-11)
 
 ### Fix
