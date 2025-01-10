@@ -16,6 +16,7 @@ from logging import Logger
 import pandas as pd
 from typing import Union, List
 from pyspark.sql import DataFrame
+import numpy as np
 
 
 class AnomalyWatchdog:
@@ -152,7 +153,7 @@ class AnomalyWatchdog:
                             list_dimension_value = [
                                 dimension for dimension
                                 in self.df_input[column_dimension].unique()
-                                if dimension is not None
+                                if dimension is not (None or np.nan)
                             ]
                             for dimension_value in list_dimension_value:
                                 df_dimension = (
@@ -181,10 +182,9 @@ class AnomalyWatchdog:
                                     dimension_value
                                 )
                                 list_df_dimension.append(df_predictions_element)
-                            df_dimension = pd.concat(list_df_dimension)
-                        return df_dimension
-                    else:
-                        return df_dimension
+                if len(list_df_dimension) > 0:
+                    df_dimension = pd.concat(list_df_dimension)
+                return df_dimension
             else:
                 return df_dimension
         else:
