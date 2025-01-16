@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.0.7 (2025-01-16)
+
+### Bug Fixes
+
+- Adding support for arm
+  ([`117419b`](https://github.com/adevinta/anomalywatchdog/commit/117419b7fc916832c7662c32a40146d6eb1629ed))
+
+
 ## v0.0.6 (2025-01-10)
 
 ### Bug Fixes
