@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.0.8 (2025-01-16)
+
+### Bug Fixes
+
+- Adding poetry installation in CI build job
+  ([`eeff700`](https://github.com/adevinta/anomalywatchdog/commit/eeff7007029fc76631becaff53b7087d77718176))
+
+
 ## v0.0.7 (2025-01-16)
 
 ### Bug Fixes
