@@ -12,6 +12,8 @@ pyspark = "3.2.1"
 PyYAML = "^6.0"
 pandas = "1.5.2"
 tensorflow = "^2.16.1"
+#tensorflow = {version = "^2.16.1", markers = "sys_platform != 'darwin' or platform_machine != 'arm64'"}
+#tensorflow-macos = {version = "^2.16.1", markers = "sys_platform == 'darwin' and platform_machine == 'arm64'"}
 prophet = "^1.1.5"
 pmdarima = "^2.0.4"
 spicy = "^0.16.0"

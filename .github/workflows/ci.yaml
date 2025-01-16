@@ -46,7 +46,9 @@ jobs:
       github.ref == 'refs/heads/main' && 
       !contains ( github.event.head_commit.message, 'chore(release)' )
     runs-on: ubuntu-latest
-    concurrency: release
+    outputs:
+      released: ${{ steps.release-status.outputs.released }}
+    #concurrency: release
     permissions:
       id-token: write
       contents: write
@@ -54,7 +56,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v3
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - uses: actions/checkout@v3
         with:
@@ -96,8 +98,41 @@ jobs:
 #          poetry config pypi-token.test-pypi $TEST_PYPI_TOKEN
 #          poetry publish -r test-pypi -u __token__
 
-      - if: steps.release-status.outputs.released == 'true'
-        name: Release to PyPI
+#      - if: steps.release-status.outputs.released == 'true'
+#        name: Build package
+#        id: build-package
+#        run: poetry build
+
+#      - if: steps.release-status.outputs.released == 'true'
+#        name: Release to PyPI
+#        id: pypi-release
+#        env:
+#          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+#        run: |
+#          poetry config pypi-token.pypi $PYPI_TOKEN
+#          poetry publish
+
+
+  Build:
+    needs: Release
+    if: needs.Release.outputs.released == 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - uses: actions/checkout@v3
+
+      - name: Build package
+        id: build-package
+        run: poetry build
+
+      - name: Release to PyPI
         id: pypi-release
         env:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
